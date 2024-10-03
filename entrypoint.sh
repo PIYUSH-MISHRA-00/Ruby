@@ -1,10 +1,11 @@
 #!/bin/bash
 set -e
 
-# Run database migrations
-echo "Running migrations..."
-bundle exec rails db:migrate
+# Remove a potentially pre-existing server.pid for Rails.
+rm -f /my_clinic_app/tmp/pids/server.pid
 
-# Start the server
-echo "Starting Rails server..."
+# Check if the database exists. If not, create the database and run migrations.
+bundle exec rails db:prepare
+
+# Start the Rails server.
 exec bundle exec rails server -b 0.0.0.0 -p 3000
